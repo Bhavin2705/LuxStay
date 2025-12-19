@@ -58,12 +58,14 @@ export const login = async (req, res, next) => {
       { expiresIn: '24h' }
     );
 
-    const isProduction = process.env.NODE_ENV === 'production';
+    const isDeployedEnv =
+      process.env.NODE_ENV === 'production' ||
+      (process.env.CORS_ORIGIN && !process.env.CORS_ORIGIN.includes('localhost'));
 
     res.cookie('authToken', token, {
       httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? 'none' : 'lax',
+      secure: isDeployedEnv,
+      sameSite: isDeployedEnv ? 'none' : 'lax',
       maxAge: 24 * 60 * 60 * 1000
     });
 
