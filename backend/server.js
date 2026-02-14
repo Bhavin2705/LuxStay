@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import { createServer } from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -20,6 +20,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.set('trust proxy', 1);
 const server = createServer(app);
 const PORT = process.env.PORT || 5000;
 
@@ -68,7 +69,6 @@ app.use((req, res) => {
 
 app.use(errorHandler);
 
-// Start server
 server.listen(PORT, () => {
   console.log('Server running on port ' + PORT);
   console.log('Environment: ' + process.env.NODE_ENV);
